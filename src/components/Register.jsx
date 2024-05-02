@@ -68,13 +68,13 @@ const Register = () => {
                 {...formik.getFieldProps("email")}
                 className={styles.textbox}
                 type="text"
-                placeholder="Email*"
+                placeholder="Email"
               />
               <input
                 {...formik.getFieldProps("username")}
                 className={styles.textbox}
                 type="text"
-                placeholder="Username*"
+                placeholder="Username"
               />
               <input
                 {...formik.getFieldProps("password")}
