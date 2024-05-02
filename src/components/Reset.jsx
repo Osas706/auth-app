@@ -26,7 +26,7 @@ const Reset = () => {
 
       <div className="flex justify-center items-center h-screen">
         <div className={styles.glass} style={{ width: "50%"}}>
-          <div className="titleflex flex-col items-center">
+          <div className="title flex flex-col items-center">
             <h4 className="text-5xl font-bold">Reset</h4>
             <span className="py-4 text-xl w-2/3 text-center text-gray-500">
               Enter new password.
