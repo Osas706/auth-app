@@ -4,18 +4,21 @@ import avatar from "../assets/no-image.jpeg";
 import styles from "../styles/Username.module.css";
 import { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
-import { registerValidate } from "../helper/validate";
+import { profileValidate } from "../helper/validate";
 import convertToBase64 from "../helper/convert";
+import extend from "../styles/Profile.module.css";
 
 const Profile = () => {
   const [file, setFile] = useState();
   const formik = useFormik({
     initialValues: {
+      firstName: '',
+      lastName: '',
+      mobile: '',
       email: "example@gmail.com",
-      username: "example122",
-      password: "",
+      address: '',
     },
-    validate: registerValidate,
+    validate: profileValidate,
     validateOnBlur: false,
     validateOnChange: false,
     onSubmit: async (values) => {
@@ -35,7 +38,7 @@ const Profile = () => {
 
       <div className="flex justify-center items-center h-screen">
         <div
-          className={styles.glass}
+          className={`${styles.glass} ${extend.glass}`}
           style={{ width: "45%", paddingTop: "3em" }}
         >
           <div className="title flex flex-col items-center">
@@ -50,7 +53,7 @@ const Profile = () => {
               <label htmlFor="profile">
                 <img
                   src={file || avatar}
-                  className={styles.profile_img}
+                  className={`${styles.profile_img} ${extend.profile_img}`}
                   alt="avatar"
                 />
               </label>
