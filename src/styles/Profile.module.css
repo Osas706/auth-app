@@ -4,7 +4,7 @@
 }
 
 .profile_img{
-    @apply w-40 cursor-pointer;
+    @apply w-40 h-40 cursor-pointer object-cover;
 }
 
 .textbox{

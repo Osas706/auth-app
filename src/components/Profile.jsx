@@ -1,22 +1,22 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import avatar from "../assets/no-image.jpeg";
-import styles from "../styles/Username.module.css";
 import { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { profileValidate } from "../helper/validate";
 import convertToBase64 from "../helper/convert";
+import styles from "../styles/Username.module.css";
 import extend from "../styles/Profile.module.css";
 
 const Profile = () => {
   const [file, setFile] = useState();
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      mobile: '',
+      firstName: "",
+      lastName: "",
+      mobile: "",
       email: "example@gmail.com",
-      address: '',
+      address: "",
     },
     validate: profileValidate,
     validateOnBlur: false,
@@ -70,13 +70,13 @@ const Profile = () => {
               <div className="name flex w-4/5 gap-5">
                 <input
                   {...formik.getFieldProps("firstName")}
-                  className={styles.textbox}
+                  className={`${styles.textbox} ${extend.textbox}`}
                   type="text"
                   placeholder="FirstName"
                 />
                 <input
                   {...formik.getFieldProps("lastName")}
-                  className={styles.textbox}
+                  className={`${styles.textbox} ${extend.textbox}`}
                   type="text"
                   placeholder="LastName"
                 />
@@ -85,38 +85,34 @@ const Profile = () => {
               <div className="name flex w-4/5 gap-5">
                 <input
                   {...formik.getFieldProps("mobile")}
-                  className={styles.textbox}
+                  className={`${styles.textbox} ${extend.textbox}`}
                   type="text"
                   placeholder="Mobile No."
                 />
                 <input
                   {...formik.getFieldProps("email")}
-                  className={styles.textbox}
+                  className={`${styles.textbox} ${extend.textbox}`}
                   type="text"
                   placeholder="Email"
                 />
               </div>
 
+              <input
+                {...formik.getFieldProps("address")}
+                className={`${styles.textbox} ${extend.textbox}`}
+                type="text"
+                placeholder="Address"
+              />
               
-                <input
-                  {...formik.getFieldProps("address")}
-                  className={styles.textbox}
-                  type="text"
-                  placeholder="Address"
-                />
-                <button className={styles.btn} type="submit">
-                  Update
-                </button>
-              
-             
+              <button className={styles.btn} type="submit">
+                Update
+              </button>
             </div>
 
             <div className="text-center py-4">
               <span className="text-gray-500">
                 come back later?{" "}
-                <button className="text-red-500">
-                  Logout
-                </button>
+                <button className="text-red-500">Logout</button>
               </span>
             </div>
           </form>
