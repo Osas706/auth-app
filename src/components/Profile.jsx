@@ -15,7 +15,7 @@ const Profile = () => {
       firstName: "",
       lastName: "",
       mobile: "",
-      email: "example@gmail.com",
+      email: "",
       address: "",
     },
     validate: profileValidate,
