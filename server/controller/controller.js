@@ -3,6 +3,21 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
 
+//middleware for verify user
+export async function verifyUser(req, res, next){
+   try {
+      const {username} = req.method == "GET" ? req.query : req.body;
+
+      //check if user exist
+      let exist = await UserModel.findOne({username});
+      if(!exist) return res.status(404).send({error : "Can't find User"});
+      next();
+   } catch (error) {
+      console.error("Error in verifyUser controller");
+      return res.status(500).send({error: "Authentication Error"});
+   };
+};
+
 /** POST: http://localhost:8080/api/register 
  * @param : {
   "username" : "example123",
@@ -51,7 +66,7 @@ export async function register(req, res) {
     }
 
   } catch (error) {
-    console.log("Error in register controller");
+    console.error("Error in register controller");
     return res.status(500).send(error);
   }
 };
@@ -88,15 +103,36 @@ export async function login(req, res) {
     });
 
   } catch (error) {
-    console.log("Error in login controller");
+    console.error("Error in login controller");
     return res.status(500).send(error);
   };
 };
 
 /** GET: http://localhost:8080/api/user/example123 */
 export async function getUser(req, res) {
-  res.json("getUser route");
-}
+    const {username} = req.params;
+
+  try {
+    
+    if(!username) return res.status(501).send({error: "Invalid Username"});
+
+    //const user = await UserModel.findOne({username});
+    //if(error) return res.status(501).send({error});
+    //if(!user) return res.status(500).send({error: "Couldn't Find the User."});
+
+    UserModel.findOne({username}, function(err, user){
+        if(err) return res.status(501).send({err});
+        if(!user) return res.status(500).send({error: "Couldn't Find the User."});
+
+        return res.status(201).send(user);
+    });
+
+    
+  } catch (error) {
+    console.error("Error in getUser controller");
+    return res.status(404).send({error: "Cant find User data"});
+  };
+};
 
 /** PUT: http://localhost:8080/api/update-user 
  * @param: {
@@ -109,7 +145,12 @@ body: {
 }
 */
 export async function updateUser(req, res) {
-  res.json("updateUser route");
+    try {
+        
+     } catch (error) {
+        console.log("Error in updateUser controller");
+        return res.status(500).send(error);
+     };
 }
 
 /** GET: http://localhost:8080/api/generate-otp */
