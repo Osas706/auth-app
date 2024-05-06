@@ -2,6 +2,7 @@ import UserModel from "../models/user.model.js";
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import ENV from '../config.js';
+import otpGenerator from 'otp-generator';
 
 //middleware for verify user
 export async function verifyUser(req, res, next){
@@ -110,33 +111,30 @@ export async function login(req, res) {
 
 /** GET: http://localhost:8080/api/user/example123 */
 export async function getUser(req, res) {
-    const {username} = req.params;
+  const {username} = req.params;
 
   try {
     
     if(!username) return res.status(501).send({error: "Invalid Username"});
 
-    //const user = await UserModel.findOne({username});
-    //if(error) return res.status(501).send({error});
-    //if(!user) return res.status(500).send({error: "Couldn't Find the User."});
+    const user = await UserModel.findOne({username}).exec();
+   
+    if(!user) return res.status(500).send({error: "Couldn't Find the User."});
+  
+    //remove d password from d data to b sent
+    const {password, ...rest} = user._doc;
 
-    UserModel.findOne({username}, function(err, user){
-        if(err) return res.status(501).send({err});
-        if(!user) return res.status(500).send({error: "Couldn't Find the User."});
-
-        return res.status(201).send(user);
-    });
-
+    return res.status(201).send(rest);
     
   } catch (error) {
-    console.error("Error in getUser controller");
+    console.error("Error in getUser controller", error);
     return res.status(404).send({error: "Cant find User data"});
   };
 };
 
 /** PUT: http://localhost:8080/api/update-user 
  * @param: {
-  "header" : "<token>"
+  "id" : "<userid>"
 }
 body: {
     firstName: '',
@@ -145,29 +143,61 @@ body: {
 }
 */
 export async function updateUser(req, res) {
-    try {
-        
-     } catch (error) {
-        console.log("Error in updateUser controller");
-        return res.status(500).send(error);
-     };
+  try {
+    //const id = req.query.id;
+    const {userId} = req.user;
+    const body = req.body;
+
+    if(userId){
+      const updatedUser = await UserModel.updateOne({_id : userId}, {
+        $set: {
+          firstName: body.firstName,
+          address : body.address,
+          profile : body.profile,
+          email: body.email
+        }
+      }, {new: true});
+
+      return res.status(200).json({message: "Updated..."})
+    }else{
+      return res.status(401).send({message: "User Not Found"})
+    };
+
+  } catch (error) {
+    console.log("Error in updateUser controller", error);
+    return res.status(401).send(error);
+  };
 }
 
 /** GET: http://localhost:8080/api/generate-otp */
 export async function generateOTP(req, res) {
-  res.json("generateOTP route");
+  req.app.locals.OTP = await otpGenerator.generate(6, {lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false});
+  res.status(201).send({ code: req.app.locals.OTP });
 }
 
 /** GET: http://localhost:8080/api/verify-otp */
 export async function verifyOTP(req, res) {
-  res.json("verifyOTP route");
-}
+  const { code} = req.query;
+  if(parseInt(req.app.locals.OTP) === parseInt(code)){
+    req.app.locals.OTP = null, //reset the OTP value
+    req.app.locals.resetSession = true; //start session for the reset password
+
+    return res.status(201).send({ msg: "Verfiy Successfully"});
+  }
+
+  return res.status(400).send({error: "Invalid OTP"});
+};
 
 // successfully redirect user when OTP is valid
 /** GET: http://localhost:8080/api/create-reset */
 export async function createReset(req, res) {
-  res.json("update User route");
-}
+  if(req.app.locals.resetSession){
+    req.app.locals.resetSession = false; //aloow access to dis route only once
+    return res.status(201).send({ message : "Access grannted"});
+  };
+
+  return res.status(440).send({ error : "Session Expired"});
+};
 
 // update the password when we have valid session
 /** PUT: http://localhost:8080/api/reset-password */
