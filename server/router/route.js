@@ -6,7 +6,7 @@ import Auth, {localVariables} from "../middleware/auth.js";
 
 //post method
 router.post('/register', register); //register user
-//router.post('/register-mail', ); //send the email
+router.post('/register-mail', ); //send the email
 router.post('/auth', (req, res) => res.end()); //authenticate user
 router.post('/login', verifyUser, login); //login app
 
@@ -18,6 +18,6 @@ router.get('/create-reset', createReset); //reset all the variables
 
 //put methods
 router.put('/update-user',Auth, updateUser); //to update user profile
-router.put('/reset-password', resetPassword); //use to reset password
+router.put('/reset-password', verifyUser, resetPassword); //use to reset password
 
 export default router;
