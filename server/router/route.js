@@ -19,7 +19,7 @@ router.get('/verify-otp', verifyUser,  verifyOTP);  // verify generated OTP
 router.get('/create-reset', createReset); //reset all the variables
 
 //put methods
-router.put('/update-user',Auth, updateUser); //to update user profile
+router.put('/update-user', Auth, updateUser); //to update user profile
 router.put('/reset-password', verifyUser, resetPassword); //use to reset password
 
 export default router;

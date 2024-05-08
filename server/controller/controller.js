@@ -3,7 +3,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ENV from "../config.js";
 import otpGenerator from "otp-generator";
-import userModel from "../models/user.model.js";
 
 //middleware for verify user
 export async function verifyUser(req, res, next) {
@@ -11,7 +10,7 @@ export async function verifyUser(req, res, next) {
     const { username } = req.method == "GET" ? req.query : req.body;
 
     //check if user exist
-    let exist = await UserModel.findOne({ username });
+    let exist = await UserModel.findOne({ username }).exec();
     if (!exist) return res.status(404).send({ error: "Can't find User" });
     next();
   } catch (error) {

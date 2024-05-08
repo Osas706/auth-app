@@ -4,8 +4,9 @@ axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN
 
 //authenticate functon
 export async function authenticate(username) {
+    console.log(username);
   try {
-    return await axios.post("/api/auth", { username });
+    return await axios.post('/api/auth', { username });
   } catch (error) {
     console.log("Error in auth func", error);
     return { error: "Username doesn't exist!" };
@@ -80,7 +81,7 @@ export async function updateUser(response) {
 //generate OTP
 export async function generateOTP(username) {
   try {
-    const {data: {code}} = await axios.get('/api/generate-otp', {params: {username}});
+    const {data: {code}, status} = await axios.get('/api/generate-otp', {params: {username}});
 
     //send mail with the OTP
     if(status === 201){
