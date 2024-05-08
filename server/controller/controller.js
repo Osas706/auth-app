@@ -62,7 +62,7 @@ export async function register(req, res) {
     if (user) {
       await user.save();
 
-      res.status(201).send({ msg: "User Register Successfully", user });
+      res.status(201).send({ message: "User Register Successfully", user });
     } else {
       res.status(400).json({ error });
     }
@@ -240,10 +240,3 @@ export async function resetPassword(req, res) {
     return res.status(500).send(error);
   }
 }
-
-
-
-/////function(err, data){
-  //if(err) throw err;
-  //return res.status(201).send({msg: "Record Updated"})
-//}

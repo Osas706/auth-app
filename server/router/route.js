@@ -2,12 +2,14 @@ import express from "express";
 const router = express.Router();
 import { createReset, generateOTP, getUser, login, register, resetPassword, updateUser, verifyOTP, verifyUser } from "../controller/controller.js";
 
+import { registerMail } from "../controller/mailer.js";
 import Auth, {localVariables} from "../middleware/auth.js";
+
 
 //post method
 router.post('/register', register); //register user
-router.post('/register-mail', ); //send the email
-router.post('/auth', (req, res) => res.end()); //authenticate user
+router.post('/register-mail', registerMail); //send the email
+router.post('/auth', verifyUser, (req, res) => res.end()); //authenticate user
 router.post('/login', verifyUser, login); //login app
 
 //get methods
