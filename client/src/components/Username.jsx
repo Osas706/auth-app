@@ -21,7 +21,7 @@ const Username = () => {
     validateOnChange: false,
     onSubmit: async values => {
       setUsername(values.username);
-      navigate('/password')
+      navigate('/password');
     }
   });
 
