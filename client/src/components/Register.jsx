@@ -26,7 +26,7 @@ const Register = () => {
 
       let registerPromise = registerUser(values);
 
-      toast.promise(registerPromise, {
+       toast.promise(registerPromise, {
         loading: "Creating...",
         success: <b>Register Successfully...</b>,
         error: <b>Couldn't Register</b>
@@ -36,7 +36,7 @@ const Register = () => {
     },
   });
 
-  //convert image to base64
+  //convert image to base64 bcus formik doensn't support file upload 
   const onUpload = async e => {
     const base64 = await convertToBase64(e.target.files[0]);
     setFile(base64);
