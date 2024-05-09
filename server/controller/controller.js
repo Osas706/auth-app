@@ -36,13 +36,13 @@ export async function register(req, res) {
     const { username, password, profile, email } = req.body;
 
     //check if there's an existing username
-    const existUser = await UserModel.findOne({ username });
+    const existUser = await UserModel.findOne({ username }).exec();
     if (existUser) {
       return res.status(400).json({ error: "Username already exists" });
     }
 
     //check if there's an existing email
-    const existEmail = await UserModel.findOne({ email });
+    const existEmail = await UserModel.findOne({ email }).exec();
     if (existEmail) {
       return res.status(400).json({ error: "Email already exists" });
     }
