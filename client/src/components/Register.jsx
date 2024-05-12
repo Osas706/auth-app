@@ -26,7 +26,7 @@ const Register = () => {
 
       let registerPromise = registerUser(values);
 
-       toast.promise(registerPromise, {
+      toast.promise(registerPromise, {
         loading: "Creating...",
         success: <b>Register Successfully...</b>,
         error: <b>Couldn't Register</b>
