@@ -1,12 +1,24 @@
 import axios from "axios";
+//import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
-//axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN
+axios.defaults.baseURL = process.env.REACT_APP_SERVER_DOMAIN
+
+//get username from token
+export const getUsername = async () => {
+  const token = localStorage.getItem('token');
+  if(!token) return Promise.reject("Cannot find Token");
+
+  let decode = jwtDecode(token);
+  console.log(decode);
+  return decode;
+}
 
 //authenticate functon
 export async function authenticate(username) {
-    console.log(username);
+  //console.log(username);
   try {
-    return await axios.post('http://localhost:8080/api/auth', { username });
+    return await axios.post('/api/auth', { username });
   } catch (error) {
     console.log("Error in auth func", error);
     return { error: "Username doesn't exist!" };
@@ -31,14 +43,14 @@ export async function registerUser(data) {
     const {
       data: { message },
       status,
-    } = await axios.post('http://localhost:8080/api/register', data);
+    } = await axios.post('/api/register', data);
 
     let { username, email } = data;
 
 
     //send email
     if (status === 201) {
-      await axios.post("http://localhost:8080/api/register-mail", {
+      await axios.post("/api/register-mail", {
         username,
         userEmail: email,
         text: message,
@@ -70,8 +82,10 @@ export async function updateUser(response) {
   try {
     const token = await localStorage.getItem("token");
     const data = await axios.put("/api/update-user", response, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { "Authorization": `Bearer ${token}` },
     });
+
+    console.log(response);
 
     return Promise.resolve({ data });
   } catch (error) {
