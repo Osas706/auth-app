@@ -54,7 +54,6 @@ export const profileValidate = async(values) => {
 /*****************************************************************************/
 
 
-
 //validate password
 const passwordVerify = (error = {}, values) => {
     const specialChars = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
@@ -71,7 +70,6 @@ const passwordVerify = (error = {}, values) => {
   
     return error;
 };
-
 
 //validate username
 const usernameVerify = (error = {}, values) => {

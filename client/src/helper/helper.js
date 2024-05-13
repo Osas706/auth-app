@@ -97,7 +97,7 @@ export async function updateUser(response) {
 //generate OTP
 export async function generateOTP(username) {
   try {
-    const {data: {code}, status} = await axios.get('/api/generate-otp', {params: {username}});
+    const {data: {code}, status} = await axios.get('http://localhost:8080/api/generate-otp', {params: {username}});
 
     //send mail with the OTP
     if(status === 201){
