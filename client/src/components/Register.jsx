@@ -18,6 +18,7 @@ const Register = () => {
       username: "example123",
       password: "admin123.",
     },
+
     validate: registerValidate,
     validateOnBlur: false,
     validateOnChange: false,
@@ -32,7 +33,8 @@ const Register = () => {
         error: <b>Couldn't Register</b>
       });
 
-     registerPromise.then(() => navigate('/'));
+     registerPromise.then(() => navigate('/')).catch(error => console.log(error));
+
     },
   });
 

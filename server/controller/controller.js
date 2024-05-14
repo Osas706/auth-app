@@ -44,7 +44,7 @@ export async function register(req, res) {
     //check if there's an existing email
     const existEmail = await UserModel.findOne({ email }).exec();
     if (existEmail) {
-      return res.status(400).json({ error: "Email already exists" });
+      return res.status(400).send({ error: "Email already exists" });
     }
 
     //hash password here;
@@ -201,8 +201,8 @@ export async function verifyOTP(req, res) {
 /** GET: http://localhost:8080/api/create-reset */
 export async function createReset(req, res) {
   if (req.app.locals.resetSession) {
-    req.app.locals.resetSession = false; //aloow access to dis route only once
-    return res.status(201).send({ message: "Access grannted" });
+    //req.app.locals.resetSession = false; //aloow access to dis route only once
+    return res.status(201).send({ flag : req.app.locals.resetSession });
   }
 
   return res.status(440).send({ error: "Session Expired" });
@@ -220,7 +220,7 @@ export async function resetPassword(req, res) {
        .then(user => {
          bcrypt.hash(password, 10)
            .then( hashedPassword => {
-             UserModel.updateOne({username: user.username}, {password: hashedPassword})
+             UserModel.updateOne({username: user.username}, {password: hashedPassword}).exec();
              return res.status(201).send({msg: "Record Updated"})
            })
            .catch(error => {
