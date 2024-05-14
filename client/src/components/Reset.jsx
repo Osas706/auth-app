@@ -16,8 +16,8 @@ const Reset = () => {
 
   const formik = useFormik({
     initialValues: {
-      password: "admin@1234.",
-      confirm_pwd: "admin@1234.",
+      password: "",
+      confirm_pwd: "",
     },
 
     validate: resetPasswordValidate,
