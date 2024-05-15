@@ -4,6 +4,10 @@ import morgan from 'morgan';
 import connect from './database/conn.js';
 import router from './router/route.js';
 
+import path from 'path';
+
+const __dirname = path.resolve();
+
 const app = express();
 const PORT = 8080;
 
@@ -20,6 +24,13 @@ app.get('/', (req, res) => {
 
 //api routes
 app.use('/api', router);
+
+app.use(express.static(path.join(__dirname, '/client/dist')))
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'))
+});
+
 
 //start server only when we have a valid connection.
 connect().then(() => {
